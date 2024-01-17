@@ -56,14 +56,13 @@ def register_view(request):
         if form.is_valid():
             new_user = form.save(commit=False)
             new_user.set_password(form.cleaned_data['password_1'])
-            new_user.save()
+            person = form.save()
             message = {
                 'type': 'success',
                 'text': f'Вы успешно зарегистрировались в системе.'
             }
             request.session['message'] = message
             if 'tg_id' in request.POST:
-                person = Person.objects.last()
                 tg_bot = TgBot.objects.get(id=1)
                 smart_bot = SmartTgBot(tg_bot)
                 smart_bot.send_msg(f'{person.tg_id}', 'Поздравляю! Вы успешно зарегестрировались!')
