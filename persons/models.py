@@ -37,3 +37,22 @@ class Person(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+
+
+class BotBase(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(default='')
+    token = models.CharField(max_length=200)
+    active_status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.title
+
+
+class TgBot(BotBase):
+    pass
