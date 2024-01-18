@@ -56,3 +56,17 @@ class BotBase(models.Model):
 
 class TgBot(BotBase):
     pass
+
+
+class Task(models.Model):
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='task')
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, default='Новая задача')
+    text = models.TextField(default='Новая задача')
+    status = models.BooleanField(null=True)
+    time_end = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at']

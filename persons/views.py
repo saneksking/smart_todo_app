@@ -1,15 +1,17 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from persons.forms import SignUpForm
-from persons.models import Person
+from persons.models import Person, Task
 from persons.models import TgBot
 from persons.smart_tg_bot import SmartTgBot
 
 
 def index(request):
+    person = request.user
     message = request.session.pop('message', None)
     context = {
         'message': message,
+        'person': person,
     }
     return render(request, 'persons/index.html', context)
 
@@ -17,7 +19,7 @@ def index(request):
 def login_view(request):
     message = request.session.pop('message', None)
     if request.user.is_authenticated:
-        return redirect('person:index')
+        return redirect('persons:index')
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
