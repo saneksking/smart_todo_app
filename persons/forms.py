@@ -1,5 +1,5 @@
 from django import forms
-from persons.models import Person
+from persons.models import Person, Task
 
 
 class SignUpForm(forms.ModelForm):
@@ -23,3 +23,16 @@ class SignUpForm(forms.ModelForm):
         if cd['password_1'] != cd['password_2']:
             raise forms.ValidationError('Passwords dont\' match!')
         return cd['password_2']
+
+
+class CreateTaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'text', 'status', 'time_end']
+        labels = {
+            'title': 'Название',
+            'description': 'Описание',
+            'text': 'Текст',
+            'status': 'Статус',
+            'time_end': 'Дата выполнения'
+        }

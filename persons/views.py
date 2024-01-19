@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from persons.forms import SignUpForm
+from django.urls import reverse
+
+from persons.forms import SignUpForm, CreateTaskForm
 from persons.models import Person, Task
 from persons.models import TgBot
 from persons.smart_tg_bot import SmartTgBot
@@ -85,3 +87,14 @@ def register_view(request):
         'message': message
     }
     return render(request, 'persons/register.html', context)
+
+
+def task_list(request):
+    message = request.session.pop('message', None)
+    person = request.user
+    tasks = Task.objects.filter(person_id=person.id)
+    context = {
+        'tasks': tasks,
+        'message': message,
+    }
+    return render(request, 'persons/task_list.html', context)

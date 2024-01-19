@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load person_tags %}
+{% block title %}Список задач{% endblock %}
+{% block content %}
+    <h1 class="text-primary text-center">Список задач. <br>Всего задач: {% task_count request.user.id %}</h1>
+    <div class="container-fluid">
+    <hr>
+    <a href="#" class="btn btn-success"> + Создать</a>
+    <hr>
+    {% for task in tasks %}
+    <div class="card" style="width: 18rem;">
+    <ul class="list-group list-group-flush">
+    <li class="list-group-item active">Название: {{ task.title }}</li>
+    <li class="list-group-item">Описание: {{ task.description }}</li>
+    <li class="list-group-item">Текст: {{ task.text }}</li>
+        <li class="list-group-item">Статус: {% if task.status == 1 %}<span class="text-success">Готова</span>{% elif task.status == None %}Не готова{% else %}<span class="text-danger">Отменена</span>{% endif %}</li>
+    </ul>
+</div>
+        <br>
+    {% endfor %}
+    </div>
+{% endblock %}

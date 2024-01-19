@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load person_tags %}
 <html lang="en">
 <head>
     {% block head %}
@@ -16,6 +17,13 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mv-auto">
+          {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                  <a href="{% url 'persons:task_list' %}" aria-current="page" class="nav-link active">Задачи {% task_count request.user.id %}</a>
+              </li>
+          {% endif %}
+      </ul>
       <ul class="navbar-nav ms-auto">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
