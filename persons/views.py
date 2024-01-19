@@ -64,11 +64,14 @@ def register_view(request):
                 'text': f'Вы успешно зарегистрировались в системе.'
             }
             request.session['message'] = message
-            if 'tg_id' in request.POST:
-                tg_bot = TgBot.objects.get(id=1)
-                smart_bot = SmartTgBot(tg_bot)
-                smart_bot.send_msg(f'{person.tg_id}', 'Поздравляю! Вы успешно зарегестрировались!')
-            return redirect('persons:login')
+            try:
+                if 'tg_id' in request.POST:
+                    tg_bot = TgBot.objects.get(active_status=True)
+                    smart_bot = SmartTgBot(tg_bot)
+                    smart_bot.send_msg(f'{person.tg_id}', 'Поздравляю! Вы успешно зарегестрировались!')
+                return redirect('persons:login')
+            except Exception:
+                return redirect('persons:login')
         else:
             message = {
                 'type': 'danger',
