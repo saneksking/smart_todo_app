@@ -5,7 +5,7 @@
     <h1 class="text-primary text-center">Список задач. <br>Всего задач: {% task_count request.user.id %}</h1>
     <div class="container-fluid">
     <hr>
-    <a href="#" class="btn btn-success"> + Создать</a>
+    <a href="{% url 'persons:create_task' %}" class="btn btn-success"> + Создать</a>
     <hr>
     {% for task in tasks %}
     <div class="card" style="width: 18rem;">

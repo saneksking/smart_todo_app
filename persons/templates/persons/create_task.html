@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Создать задачу{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+    <form method="post">
+{% csrf_token %}
+  <div class="mb-3">
+    <label for="title" class="form-label">Название:</label>
+    <input required type="text" class="form-control" id="title" name="title">
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Описание:</label>
+    <input required type="text" class="form-control" id="description" name="description">
+  </div>
+        <div class="mb-3">
+    <label for="text" class="form-label">Текст:</label>
+            <textarea required type="text" class="form-control" id="text" name="text"></textarea>
+  </div>
+        <div class="mb-3">
+    <label for="status" class="form-label">Статус задачи:</label>
+    <input type="checkbox" id="status" name="status">
+  </div>
+        <div class="mb-3">
+    <label for="time_end" class="form-label">Дата выполнения:</label>
+    <input required type="date" class="form-control" id="time_end" name="time_end">
+  </div>
+  <button type="submit" class="btn btn-success">Создать</button>
+        </form>
+</div>
+{% endblock %}

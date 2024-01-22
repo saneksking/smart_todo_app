@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register_view, name='register'),
     path('tasks/', login_required(views.task_list), name='task_list'),
+    path('tasks/create/', login_required(views.create_task), name='create_task')
 ]

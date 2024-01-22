@@ -98,3 +98,23 @@ def task_list(request):
         'message': message,
     }
     return render(request, 'persons/task_list.html', context)
+
+
+def create_task(request):
+    form = CreateTaskForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            person = request.user
+            new_task = form.save(commit=False)
+            new_task.person_id = person.id
+            new_task.save()
+            message = {
+                'type': 'success',
+                'text': f'Задача была успешно добавлена!'
+            }
+            request.session['message'] = message
+            return redirect(reverse('persons:task_list'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'persons/create_task.html', context)
