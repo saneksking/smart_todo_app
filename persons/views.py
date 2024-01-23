@@ -118,3 +118,33 @@ def create_task(request):
         'form': form,
     }
     return render(request, 'persons/create_task.html', context)
+
+
+def update_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    form = CreateTaskForm(request.POST or None, instance=task)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            message = {
+                'type': 'success',
+                'text': f'Ваша задача успешно изменена!',
+            }
+            request.session['message'] = message
+            return redirect('persons:task_list')
+    context = {
+        'form': form,
+        'task': task,
+    }
+    return render(request, 'persons/update_task.html', context)
+
+
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    task.delete()
+    message = {
+        'type': 'success',
+        'text': f'Ваша задача успешно удалена!',
+    }
+    request.session['message'] = message
+    return redirect('persons:task_list')

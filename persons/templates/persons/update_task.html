@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Изменение задачи{% endblock %}
+{% block content %}
+        <div class="container-fluid">
+    <form method="post">
+{% csrf_token %}
+        {{ form.as_p }}
+  <button type="submit" class="btn btn-success">Сохранить</button>
+        </form>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    $('#id_title, #id_description, #id_text').addClass('form-control');
+</script>
+{% endblock %}
