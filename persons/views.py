@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
-from persons.forms import SignUpForm, CreateTaskForm
+from persons.forms import SignUpForm, CreateTaskForm, SettingsForm
 from persons.models import Person, Task
 from persons.models import TgBot
 from persons.smart_tg_bot import SmartTgBot
@@ -148,3 +148,21 @@ def delete_task(request, task_id):
     }
     request.session['message'] = message
     return redirect('persons:task_list')
+
+
+def settings(request):
+    person = get_object_or_404(Person, id=request.user.id)
+    form = SettingsForm(request.POST or None, instance=person)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            message = {
+                'type': 'success',
+                'text': f'Ваш профиль успешно изменён!',
+            }
+            request.session['message'] = message
+            return redirect('persons:index')
+    context = {
+        'form': form,
+    }
+    return render(request, 'persons/settings.html', context)

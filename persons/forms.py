@@ -37,3 +37,14 @@ class CreateTaskForm(forms.ModelForm):
             'status': 'Статус',
             'time_end': 'Дата выполнения'
         }
+
+
+class SettingsForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = ['email', 'first_name', 'last_name', 'tg_id']
+        labels = {
+            'first_name': 'Имя',
+            'last_name': 'Фамилия',
+            'tg_id': 'Телеграм ID',
+        }
