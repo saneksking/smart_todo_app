@@ -166,3 +166,15 @@ def settings(request):
         'form': form,
     }
     return render(request, 'persons/settings.html', context)
+
+
+def end_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    task.status = True
+    task.save()
+    message = {
+        'type': 'success',
+        'text': f'Статус задачи успешно изменён!',
+    }
+    request.session['message'] = message
+    return redirect('persons:task_list')
