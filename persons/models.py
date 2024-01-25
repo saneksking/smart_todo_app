@@ -64,7 +64,7 @@ class Task(models.Model):
     description = models.CharField(max_length=255, default='Новая задача')
     text = models.TextField(default='Новая задача')
     status = models.BooleanField(null=True)
-    time_end = models.DateTimeField()
+    time_end = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

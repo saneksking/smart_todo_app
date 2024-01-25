@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Создать задачу{% endblock %}
 {% block content %}
+    <h1 class="text-primary text-center">Создание задачи</h1>
+    <hr>
     <div class="container-fluid">
     <form method="post">
 {% csrf_token %}
@@ -15,10 +17,6 @@
         <div class="mb-3">
     <label for="text" class="form-label">Текст:</label>
             <textarea required type="text" class="form-control" id="text" name="text"></textarea>
-  </div>
-        <div class="mb-3">
-    <label for="status" class="form-label">Статус задачи:</label>
-    <input type="checkbox" id="status" name="status">
   </div>
         <div class="mb-3">
     <label for="time_end" class="form-label">Дата выполнения:</label>

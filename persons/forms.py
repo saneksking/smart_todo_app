@@ -29,12 +29,11 @@ class CreateTaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = ['title', 'description', 'text', 'status', 'time_end']
+        fields = ['title', 'description', 'text',    'time_end']
         labels = {
             'title': 'Название',
             'description': 'Описание',
             'text': 'Текст',
-            'status': 'Статус',
             'time_end': 'Дата выполнения'
         }
 

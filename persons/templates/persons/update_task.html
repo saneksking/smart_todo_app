@@ -1,11 +1,28 @@
 {% extends 'base.html' %}
 {% block title %}Изменение задачи{% endblock %}
 {% block content %}
-        <div class="container-fluid">
+    <h1 class="text-center text-primary">Изменине задачи: {{ task.title }}</h1>
+    <hr>
+    <div class="container-fluid">
     <form method="post">
 {% csrf_token %}
-        {{ form.as_p }}
-  <button type="submit" class="btn btn-success">Сохранить</button>
+  <div class="mb-3">
+    <label for="title" class="form-label">Название:</label>
+    <input required type="text" class="form-control" id="title" name="title" value="{{ task.title }}">
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Описание:</label>
+    <input required type="text" class="form-control" id="description" name="description" value="{{ task.description }}">
+  </div>
+        <div class="mb-3">
+    <label for="text" class="form-label">Текст:</label>
+            <textarea required type="text" class="form-control" id="text" name="text">{{ task.text }}</textarea>
+  </div>
+        <div class="mb-3">
+    <label for="time_end" class="form-label">Дата выполнения:</label>
+    <input required type="date" class="form-control" id="time_end" name="time_end" value="{{ task.time_end|date:"Y-m-d" }}">
+  </div>
+  <button type="submit" class="btn btn-success" >Сохранить</button>
         </form>
 </div>
 {% endblock %}
