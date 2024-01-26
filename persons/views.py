@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
@@ -6,6 +7,7 @@ from persons.forms import SignUpForm, CreateTaskForm, SettingsForm
 from persons.models import Person, Task
 from persons.models import TgBot
 from persons.smart_tg_bot import SmartTgBot
+from persons.decorators import is_superuser
 
 
 def index(request):
@@ -178,3 +180,26 @@ def end_task(request, task_id):
     }
     request.session['message'] = message
     return redirect('persons:task_list')
+
+
+@user_passes_test(is_superuser)
+def admin_panel(request):
+    message = request.session.pop('message', None)
+    person_list = Person.objects.all()
+    context = {
+        'person_list': person_list,
+        'message': message,
+    }
+    return render(request, 'persons/admin_panel.html', context)
+
+
+@user_passes_test(is_superuser)
+def admin_panel_delete_person(request, person_id):
+    person = Person.objects.get(id=person_id)
+    person.delete()
+    message = {
+        'type': 'success',
+        'text': f'Пользователь был успешно удалён!',
+    }
+    request.session['message'] = message
+    return redirect('persons:admin_panel')

@@ -15,5 +15,8 @@ urlpatterns = [
     path('tasks/update/<int:task_id>/', login_required(views.update_task), name='update_task'),
     path('tasks/delete/<int:task_id>/', login_required(views.delete_task), name='delete_task'),
     path('settings/', login_required(views.settings), name='settings'),
-    path('task/end-task/<int:task_id>/', login_required(views.end_task), name='end_task')
+    path('task/end-task/<int:task_id>/', login_required(views.end_task), name='end_task'),
+    path('admin-panel/', login_required(views.admin_panel), name='admin_panel'),
+    path('admin-panel/delete/<int:person_id>/', login_required(views.admin_panel_delete_person), name='admin_panel_delete'),
+
 ]

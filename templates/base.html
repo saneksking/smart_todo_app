@@ -31,6 +31,9 @@
             {{ request.user.email }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% if request.user.is_superuser %}
+          <li><a class="dropdown-item" href="{% url "persons:admin_panel" %}">Админ. панель</a></li>
+              {% endif %}
           <li><a class="dropdown-item" href="{% url "persons:settings" %}">Настройки</a></li>
             <li><a class="dropdown-item" href="{% url "persons:logout" %}">Выход</a></li>
           </ul>
