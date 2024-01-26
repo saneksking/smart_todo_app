@@ -17,6 +17,13 @@ urlpatterns = [
     path('settings/', login_required(views.settings), name='settings'),
     path('task/end-task/<int:task_id>/', login_required(views.end_task), name='end_task'),
     path('admin-panel/', login_required(views.admin_panel), name='admin_panel'),
-    path('admin-panel/delete/<int:person_id>/', login_required(views.admin_panel_delete_person), name='admin_panel_delete'),
+    path('admin-panel/delete/<int:person_id>/',
+         login_required(views.admin_panel_delete_person),
+         name='admin_panel_delete'
+         ),
+    path('admin-panel/profile/<int:person_id>/',
+         login_required(views.person_profile),
+         name='person_profile'
+         )
 
 ]

@@ -190,7 +190,7 @@ def admin_panel(request):
         'person_list': person_list,
         'message': message,
     }
-    return render(request, 'persons/admin_panel.html', context)
+    return render(request, 'persons/admin_panel/admin_panel.html', context)
 
 
 @user_passes_test(is_superuser)
@@ -203,3 +203,12 @@ def admin_panel_delete_person(request, person_id):
     }
     request.session['message'] = message
     return redirect('persons:admin_panel')
+
+
+@user_passes_test(is_superuser)
+def person_profile(request, person_id):
+    person = Person.objects.get(id=person_id)
+    context = {
+        'person': person,
+    }
+    return render(request, 'persons/admin_panel/person_profile.html', context)

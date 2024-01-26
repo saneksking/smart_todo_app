@@ -26,7 +26,7 @@
         <td>{{ person.last_name }}</td>
         <td>{{ person.task.count }}</td>
         <td>{% if person.tg_id == '' %}Отсутствует{% else %}{{ person.tg_id }}{% endif %}</td>
-        <td><a href="{% url 'persons:admin_panel_delete' person.id %}" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить пользователя {{ person.first_name }}?')">Удалить</a> </td>
+        <td><a href="{% url 'persons:person_profile' person.id %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Профиль">👨‍</a></td>
     {% endfor %}
     </tr>
   </tbody>

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load person_tags %}
+{% block title %}Профиль пользователя: {{ person.full_name }}{% endblock %}
+{% block content %}
+    <h1 class="text-center text-primary">Профиль пользователя <span class="text-danger">{{ person.full_name }}</span></h1>
+    <hr>
+    <ul class="list-group" style="margin: 0 50px; box-shadow: 10px -5px 5px rgba(0, 0, 255, 0.1);">
+        <li class="list-group-item active" aria-current="true">E-mail: {{ person.email }}</li>
+        <li class="list-group-item">Имя: {{ person.first_name }}</li>
+        <li class="list-group-item">Фамилия: {{ person.last_name }}</li>
+        <li class="list-group-item">Задачи: {% task_count person.id %}</li>
+        <li class="list-group-item">Действия: <span class="btn btn-group"><a href="{% url 'persons:admin_panel' %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Вернуться"><--</a> <a href="{% url 'persons:admin_panel_delete' person.id %}" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить пользователя {{ person.full_name }}?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить">🗑️</a></span> </li>
+    </ul>
+{% endblock %}

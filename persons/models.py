@@ -38,6 +38,9 @@ class Person(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
+    def full_name(self):
+        return self.first_name + ' ' + self.last_name
+
 
 class BotBase(models.Model):
     title = models.CharField(max_length=200)
