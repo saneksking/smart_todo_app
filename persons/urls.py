@@ -24,6 +24,10 @@ urlpatterns = [
     path('admin-panel/profile/<int:person_id>/',
          login_required(views.person_profile),
          name='person_profile'
+         ),
+    path('task/return-task/<int:task_id>/',
+         login_required(views.return_task),
+         name='return_task'
          )
 
 ]

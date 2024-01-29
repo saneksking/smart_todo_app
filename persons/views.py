@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
@@ -95,8 +96,11 @@ def task_list(request):
     message = request.session.pop('message', None)
     person = request.user
     tasks = Task.objects.filter(person_id=person.id)
+    paginator = Paginator(tasks, 10)
+    page = request.GET.get('page')
+    objects = paginator.get_page(page)
     context = {
-        'tasks': tasks,
+        'objects': objects,
         'message': message,
     }
     return render(request, 'persons/task_list.html', context)
@@ -130,7 +134,7 @@ def update_task(request, task_id):
             form.save()
             message = {
                 'type': 'success',
-                'text': f'Ваша задача успешно изменена!',
+                'text': f'Задача была успешно изменена!',
             }
             request.session['message'] = message
             return redirect('persons:task_list')
@@ -176,7 +180,7 @@ def end_task(request, task_id):
     task.save()
     message = {
         'type': 'success',
-        'text': f'Статус задачи успешно изменён!',
+        'text': f'Статус задачи был успешно изменён!',
     }
     request.session['message'] = message
     return redirect('persons:task_list')
@@ -186,8 +190,11 @@ def end_task(request, task_id):
 def admin_panel(request):
     message = request.session.pop('message', None)
     person_list = Person.objects.all()
+    paginator = Paginator(person_list, 5)
+    page = request.GET.get('page')
+    objects = paginator.get_page(page)
     context = {
-        'person_list': person_list,
+        'objects': objects,
         'message': message,
     }
     return render(request, 'persons/admin_panel/admin_panel.html', context)
@@ -212,3 +219,15 @@ def person_profile(request, person_id):
         'person': person,
     }
     return render(request, 'persons/admin_panel/person_profile.html', context)
+
+
+def return_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    task.status = None
+    task.save()
+    message = {
+        'type': 'success',
+        'text': f'Статус задачи был успешно изменён!',
+    }
+    request.session['message'] = message
+    return redirect('persons:task_list')

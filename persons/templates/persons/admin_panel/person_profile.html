@@ -9,6 +9,6 @@
         <li class="list-group-item">Имя: {{ person.first_name }}</li>
         <li class="list-group-item">Фамилия: {{ person.last_name }}</li>
         <li class="list-group-item">Задачи: {% task_count person.id %}</li>
-        <li class="list-group-item">Действия: <span class="btn btn-group"><a href="{% url 'persons:admin_panel' %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Вернуться"><--</a> <a href="{% url 'persons:admin_panel_delete' person.id %}" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить пользователя {{ person.full_name }}?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить">🗑️</a></span> </li>
+        <li class="list-group-item">Действия: <span class="btn btn-group"><a href="{% url 'persons:admin_panel' %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Вернуться"><--</a>{% if request.user.id %}<a href="{% url 'persons:admin_panel_delete' person.id %}" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить пользователя {{ person.full_name }}?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить">🗑️</a>{% endif %}</span> </li>
     </ul>
 {% endblock %}
