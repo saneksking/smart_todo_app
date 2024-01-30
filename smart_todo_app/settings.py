@@ -128,3 +128,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'persons.Person'
 LOGIN_URL = '/login/'
+# Настройки Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # URL Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # URL Redis (для хранения результатов)
