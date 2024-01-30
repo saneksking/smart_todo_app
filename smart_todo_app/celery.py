@@ -16,4 +16,8 @@ app.conf.beat_schedule = {
         'task': 'persons.tasks.task_test',
         'schedule': crontab(minute='*'),
     },
+    'send_tasks_in_time': {
+        'task': 'persons.tasks.send_tasks_in_time',
+        'schedule': crontab(hour='6', minute='0')
+    },
 }
