@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
@@ -9,6 +10,7 @@ from persons.models import Person, Task
 from persons.models import TgBot
 from persons.smart_tg_bot import SmartTgBot
 from persons.decorators import is_superuser
+from persons.tasks import send_tasks_in_time
 
 
 def index(request):
@@ -231,3 +233,21 @@ def return_task(request, task_id):
     }
     request.session['message'] = message
     return redirect('persons:task_list')
+
+
+def send_tasks(request):
+    print('Success')
+    response = {
+        'type': 'danger',
+        'text': 'Внимание! При отправке задач произошла ошибка!'
+    }
+    request.session['message'] = response
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest' and request.method == 'POST':
+        print('Success 2')
+        response = {
+            'type': 'success',
+            'text': 'Уведомление в Телеграм успешно отправлено!',
+        }
+        request.session['message'] = response
+        send_tasks_in_time.delay()
+    return JsonResponse(response)

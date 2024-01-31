@@ -2,6 +2,12 @@
 {% block title %}Административная панель{% endblock %}
 {% block content %}
     <h1 class="text-center text-primary">Панель администрации</h1>
+        <div id="msg" style="display: none" class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong id="message"></strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="btn_close"></button>
+</div>
+    <hr>
+        <a class="btn btn-success" id="btn_send_task">Отправить задачи пользователям в Телеграм</a>
     <hr>
 <table class="table">
   <thead class="table-dark">
@@ -72,6 +78,50 @@
                 {% endif %}
             </ul>
         </nav>
-  </div>
-</div>
+{% endblock %}
+{% block js %}
+    <script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = cookie.substring(name.length + 1, cookie.length);
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+$('#btn_send_task').on('click', function (){
+    let confirm_flag = confirm('Вы действительно хотите отправить задачи всем пользователям?')
+    if (!confirm_flag) {
+        return false;
+    }
+    $.ajax({
+        url: 'send/',
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        data: {
+
+        },
+        success: function (response) {
+            if (response['type'] !== 'success') {
+                alert(response['text'])
+            } else {
+                location.reload();
+            }
+        },
+        error: function (xhr, status, error) {
+            alert('Ошибка! Не удалось отправить задачи!')
+        }
+        }
+    )
+})
+    </script>
 {% endblock %}

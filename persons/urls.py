@@ -28,6 +28,7 @@ urlpatterns = [
     path('task/return-task/<int:task_id>/',
          login_required(views.return_task),
          name='return_task'
-         )
+         ),
+    path('admin-panel/send/', login_required(views.send_tasks), name='send_tasks'),
 
 ]
