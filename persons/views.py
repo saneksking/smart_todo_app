@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
@@ -216,9 +218,15 @@ def admin_panel_delete_person(request, person_id):
 
 @user_passes_test(is_superuser)
 def person_profile(request, person_id):
+    message = request.session.pop('message', None)
     person = Person.objects.get(id=person_id)
+    date = datetime.date.today()
+    tasks = Task.objects.filter(person_id=person.id)
     context = {
         'person': person,
+        'message': message,
+        'date': date,
+        'tasks': tasks,
     }
     return render(request, 'persons/admin_panel/person_profile.html', context)
 
@@ -235,15 +243,14 @@ def return_task(request, task_id):
     return redirect('persons:task_list')
 
 
+@user_passes_test(is_superuser)
 def send_tasks(request):
-    print('Success')
     response = {
         'type': 'danger',
         'text': 'Внимание! При отправке задач произошла ошибка!'
     }
     request.session['message'] = response
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest' and request.method == 'POST':
-        print('Success 2')
         response = {
             'type': 'success',
             'text': 'Уведомление в Телеграм успешно отправлено!',
@@ -251,3 +258,24 @@ def send_tasks(request):
         request.session['message'] = response
         send_tasks_in_time.delay()
     return JsonResponse(response)
+
+
+@user_passes_test(is_superuser)
+def send_tasks_person(request, person_id):
+    tg_bot = TgBot.objects.filter(active_status=True).first()
+    smart_bot = SmartTgBot(tg_bot)
+    date = datetime.date.today()
+    person = Person.objects.get(id=person_id)
+    tasks = person.task.filter(time_end=date)
+    msg = f'Приветствую, {person.full_name()}. На сегодня у вас задач {tasks.count()}:\n\n'
+    message = {
+        'type': 'success',
+        'text': f'Задачи были успешно отправлены!',
+    }
+    request.session['message'] = message
+    for n, task in enumerate(tasks, 1):
+        msg += f'Задача №{n}: {task.title}\n'
+    smart_bot.send_msg(person.tg_id, msg)
+    return redirect(reverse('persons:person_profile', args=(person_id, )))
+
+

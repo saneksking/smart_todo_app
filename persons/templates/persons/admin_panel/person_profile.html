@@ -9,6 +9,6 @@
         <li class="list-group-item">Имя: {{ person.first_name }}</li>
         <li class="list-group-item">Фамилия: {{ person.last_name }}</li>
         <li class="list-group-item">Задачи: {% task_count person.id %}</li>
-        <li class="list-group-item">Действия: <span class="btn btn-group"><a href="{% url 'persons:admin_panel' %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Вернуться"><i class="bi bi-arrow-left"></i></a>{% if request.user.id %}<a href="{% url 'persons:admin_panel_delete' person.id %}" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить пользователя {{ person.full_name }}?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить"><i class="bi bi-trash"></i></a>{% endif %}</span> </li>
+        <li class="list-group-item">Действия: <span class="btn btn-group"><a href="{% url 'persons:admin_panel' %}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Вернуться"><i class="bi bi-arrow-left"></i></a>{% if request.user.id %}<a href="{% url 'persons:admin_panel_delete' person.id %}" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить пользователя {{ person.full_name }}?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить"><i class="bi bi-trash"></i></a>{% endif %}{% for task in tasks %}{% if  task.time_end == date %}<a href="{% url 'persons:send_tasks_person' person.id %}" class="btn btn-success">Отправить задачи в Телеграм</a>{% endif %} {% endfor %} </span> </li>
     </ul>
 {% endblock %}
