@@ -5,7 +5,10 @@
     <h1 class="text-primary text-center">Список задач <sup class="text-danger">{% task_count request.user.id %}</sup></h1>
     <div class="container-fluid">
     <hr>
-    <a href="{% url 'persons:create_task' %}" class="btn btn-success"> + Создать</a>
+    <div class="btn btn-group">
+            <a href="{% url 'persons:create_task' %}" class="btn btn-success"> + Создать</a>
+            <a href="{% url 'persons:send_tasks_today' %}" class="btn btn-primary">Отправить задачи в Телеграм</a>
+    </div>
     <hr>
     {% for task in objects %}
     <div class="card">

@@ -106,6 +106,7 @@ def task_list(request):
     context = {
         'objects': objects,
         'message': message,
+        'person': person,
     }
     return render(request, 'persons/task_list.html', context)
 
@@ -279,3 +280,19 @@ def send_tasks_person(request, person_id):
     return redirect(reverse('persons:person_profile', args=(person_id, )))
 
 
+def send_tasks_today(request):
+    person = Person.objects.get(id=request.user.id)
+    date = datetime.date.today()
+    tasks_list = person.task.filter(time_end=date)
+    text = f'Приветствую, {person.full_name()}. На сегодня у вас задач {tasks_list.count()}:\n\n'
+    bot_tg = TgBot.objects.filter(active_status=True).first()
+    smart_bot = SmartTgBot(bot_tg)
+    for n, task in enumerate(tasks_list, 1):
+        text += f'Задача №{n}: {task.title}\n'
+    smart_bot.send_msg(person.tg_id, text)
+    message = {
+        'type': 'success',
+        'text': f'Задачи были успешно отправлены!',
+    }
+    request.session['message'] = message
+    return redirect(reverse('persons:task_list'))
